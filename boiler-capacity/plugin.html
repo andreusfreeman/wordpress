@@ -1,0 +1,154 @@
+﻿ <!doctype html>
+    <html>
+<head>
+	<script
+		src="https://code.jquery.com/jquery-1.12.4.min.js"
+		integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+		crossorigin="anonymous"></script>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		.main {
+			margin: 0 auto;
+			position: relative;
+			width: 1000px;
+			height: 500px;
+		}
+		.search__block__area,
+		.search__block__flat {
+			width: 600px;
+			float: left;
+			border: 1px solid red;
+			margin: 10px;
+		}
+		.search__block__type-fuel {
+			width: 350px;
+			float: right;
+			border: 1px solid red;
+			margin: 10px;
+		}
+		.search__block__area-header,
+		.search__block__type-fuel-header,
+		.search__block__flat-header {
+			height:25px;
+			background-color: red;
+			padding: 5px;
+			color: white;
+			font-family: Calibri, sans-serif;
+		}
+		.search__block__area-body{
+			padding: 10px;
+		}
+		.search__block__flat-type {
+			margin: 0 auto;
+		}
+		.search__block__flat-type li{
+			display: inline-block;
+			padding: 5px;
+			margin: 5px;
+			cursor: pointer;
+			list-style: none;
+		}
+		.search__block__type-fuel-type li{
+			width: 100px;
+			height: 100px;
+			display: inline-block;
+			padding: 5px;
+			list-style: none;
+			overflow: hidden;
+			margin: 1px;
+			border: 1px solid blue;
+		}
+		.search__block__area-button {
+			height: 30px;
+			clear: both;
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<div class="search__block">
+			<div class="search__block__area">
+				<div class="search__block__area-header">
+					<span>Отапливаемая площадь:</span>
+				</div>
+				<div class="search__block__area-body">
+					<div>
+						<!-- <label>От </label><input type="number" min="30" max="8000" value="30"> -->
+						<label> До </label><input type="number" min="25" max="500" value="25">
+						<div>
+							<input type="range" min="25" max="500" value="25">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="search__block__type-fuel">
+				<div class="search__block__type-fuel-header">
+					<span>Вид топлива:</span>
+				</div>
+				<div class="search__block__type-fuel-body">
+					<ul class="search__block__type-fuel-type">
+					</ul>
+				</div>
+			</div>
+			<div class="search__block__flat">
+				<div class="search__block__flat-header">
+					<span>Утепленность помещения:</span>
+				</div>
+				<div class="search__block__flat-body">
+					<ul class="search__block__flat-type">
+						<li><input type="radio" name="flat-block">Неутепленный</li>
+						<li><input type="radio" name="flat-block">Утепленный</li>
+						<li><input type="radio" name="flat-block">Современный</li>
+					</ul>
+				</div>
+			</div>
+			<div class="search__block__area-button">
+				<button>Расчитать потребление</button>
+			</div>
+			<div class="search__block__result">
+				<div class="search__block__result__costs-home">
+					<table class="search__block__result__costs">
+						<thead>
+							<tr>
+								<td>Вид топлива</td>
+								<td>Стоимость</td>
+								<td>Расход за сезон</td>
+								<td>Стоимость за сезон</td>
+							</tr>
+						</thead>
+					</table>
+          <table class="search__block__result__autonomous-heat">
+						<thead>
+							<tr>
+								<td>Вид топлива</td>
+								<td>Стоимость</td>
+								<td>Расход за сезон</td>
+								<td>Стоимость за сезон</td>
+                <td>Экономия за сезон</td>
+							</tr>
+						</thead>
+					</table>
+          <table class="search__block__result__alternative-energy">
+            <div>
+							<input type="range" min="25" max="500" value="25">
+						</div>
+						<thead>
+							<tr>
+								<td>Вид топлива</td>
+								<td>Стоимость</td>
+								<td>Расход за сезон</td>
+								<td>Стоимость за сезон</td>
+                <td>Экономия за сезон</td>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+<script src='script.js'></script>
+</body>
+</html>
