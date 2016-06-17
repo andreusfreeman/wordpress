@@ -1,86 +1,24 @@
 ﻿ <!doctype html>
     <html>
 <head>
+  <link rel="stylesheet" href="styles/style.css" >
 	<script
 		src="https://code.jquery.com/jquery-1.12.4.min.js"
 		integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
 		crossorigin="anonymous"></script>
-	<style>
-		* {
-			padding: 0;
-			margin: 0;
-		}
-		.main {
-			margin: 0 auto;
-			position: relative;
-			width: 1000px;
-			height: 500px;
-		}
-		.search__block__area,
-		.search__block__flat {
-			width: 600px;
-			float: left;
-			border: 1px solid red;
-			margin: 10px;
-		}
-		.search__block__type-fuel {
-			width: 350px;
-			float: right;
-			border: 1px solid red;
-			margin: 10px;
-		}
-		.search__block__area-header,
-		.search__block__type-fuel-header,
-		.search__block__flat-header {
-			height:25px;
-			background-color: red;
-			padding: 5px;
-			color: white;
-			font-family: Calibri, sans-serif;
-		}
-		.search__block__area-body{
-			padding: 10px;
-		}
-		.search__block__flat-type {
-			margin: 0 auto;
-		}
-		.search__block__flat-type li{
-			display: inline-block;
-			padding: 5px;
-			margin: 5px;
-			cursor: pointer;
-			list-style: none;
-		}
-		.search__block__type-fuel-type li{
-			width: 100px;
-			height: 100px;
-			display: inline-block;
-			padding: 5px;
-			list-style: none;
-			overflow: hidden;
-			margin: 1px;
-			border: 1px solid blue;
-		}
-		.search__block__area-button {
-			height: 30px;
-			clear: both;
-		}
-	</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 </head>
-<body>
-	<div class="main">
+<body ng-app="app">
+	<div class="main" ng-controller="mainCtrl">
 		<div class="search__block">
 			<div class="search__block__area">
 				<div class="search__block__area-header">
-					<span>Отапливаемая площадь:</span>
+					<span>Отапливаемая площадь: </span>
 				</div>
 				<div class="search__block__area-body">
 					<div>
-						<!-- <label>От </label><input type="number" min="30" max="8000" value="30"> -->
-						<label> До </label><input type="number" min="25" max="500" value="25">
-						<div>
-							<input type="range" min="25" max="500" value="25">
-						</div>
+						<input type="range" min="25" max="500" value="25" ng-model="squareMetr">
+            <span>{{squareMetr}}</span>
 					</div>
 				</div>
 			</div>
@@ -89,7 +27,11 @@
 					<span>Вид топлива:</span>
 				</div>
 				<div class="search__block__type-fuel-body">
-					<ul class="search__block__type-fuel-type">
+					<ul class="search__block__type-fuel-type" ng-repeat="fuelType in valueFuel">
+            <li>
+              <label>{{fuelType[0]}}</label>
+              <input type="checkbox" checked>
+            </li>
 					</ul>
 				</div>
 			</div>
@@ -98,10 +40,28 @@
 					<span>Утепленность помещения:</span>
 				</div>
 				<div class="search__block__flat-body">
+          <ul class="search__block__flat-type">
+						<li>
+              <label>
+                <input type="radio" ng-model="flatFloorBlock.name" value="oneFloor" ng-click="updateWarmed()">1 этаж
+              </label>
+            </li>
+						<li>
+              <label>
+                <input type="radio" ng-model="flatFloorBlock.name" value="twoFloor" ng-click="updateWarmed()">2 этажа
+              </label>
+            </li>
+					</ul>
 					<ul class="search__block__flat-type">
-						<li><input type="radio" name="flat-block">Неутепленный</li>
-						<li><input type="radio" name="flat-block">Утепленный</li>
-						<li><input type="radio" name="flat-block">Современный</li>
+            <label>
+              <li><input type="radio" ng-model="flatBlock.name" value="not-warmed" ng-click="updateWarmed()">Неутепленный</li>
+            </label>
+            <label>
+              <li><input type="radio" ng-model="flatBlock.name" value="warmed" ng-click="updateWarmed()">Утепленный</li>
+            </label>
+            <label>
+              <li><input type="radio" ng-model="flatBlock.name" value="modern" ng-click="updateWarmed()">Современный</li>
+            </label>
 					</ul>
 				</div>
 			</div>
@@ -110,7 +70,7 @@
 			</div>
 			<div class="search__block__result">
 				<div class="search__block__result__costs-home">
-					<table class="search__block__result__costs">
+					<table class="search__block__result__costs" cellspacing="0">
 						<thead>
 							<tr>
 								<td>Вид топлива</td>
@@ -119,36 +79,83 @@
 								<td>Стоимость за сезон</td>
 							</tr>
 						</thead>
+						<tr ng-repeat="value in valueFuel">
+							<td style="text-align: left">{{value[0]}}</td>
+							<td><input type="number" value="" ng-model="value[1]"></td>
+							<td ng-model="value[2]">{{value[2] * squareMetr / 25 | number:2}}</td>
+							<td>{{value[1] * value[2] * squareMetr / 25 | number:1 | currencyUAH}}</td>
+						</tr>
 					</table>
-          <table class="search__block__result__autonomous-heat">
+          <h4>НЕЖИЛОЙ ФОНД: ПЕРЕХОД ОТ ТЕПЛОСЕТИ НА АВТОНОМНОЕ ТЕПЛОСНАБЖЕНИЕ</h4>
+          <div class="commonRange">
+            <input type="range" min="20" max="2000" step="10" value="20" ng-model="energyAutonomous" width="500px"> {{energyAutonomous}}
+          </div>
+          <table class="search__block__result__autonomous-heat" cellspacing="0">
 						<thead>
 							<tr>
 								<td>Вид топлива</td>
 								<td>Стоимость</td>
 								<td>Расход за сезон</td>
 								<td>Стоимость за сезон</td>
-                <td>Экономия за сезон</td>
+								<td>Экономия за сезон</td>
 							</tr>
 						</thead>
+						<tr>
+							<td style="text-align: left">Теплосети</td>
+							<td></td>
+							<td ng-model="costs">{{energyAutonomous}}</td>
+							<td ng-model="costsValue">{{energyAutonomous * energyAutonomousCost | currencyUAH}}</td>
+							<td>-</td>
+						</tr>
+						<tr ng-repeat="auton in valueFuel">
+							<td style="text-align: left">{{auton[0]}}</td>
+							<td><input type="number" value="" ng-model="auton[1]"></td>
+							<td ng-model="auton[2]">{{energyAutonomous * auton[4] / 20 | number:2}}</td>
+							<td>{{auton[1] * energyAutonomous * auton[4] / 20 | number:1 | currencyUAH}}</td>
+							<td>
+                {{100-(auton[1] * energyAutonomous * auton[4] / 20 * 100/(energyAutonomous * energyAutonomousCost)) | number:2 | percent}}
+                :
+                {{energyAutonomous * energyAutonomousCost - auton[1] * energyAutonomous * auton[4] / 20 | number:1 | currencyUAH}}
+              </td>
+						</tr>
 					</table>
-          <table class="search__block__result__alternative-energy">
-            <div>
-							<input type="range" min="25" max="500" value="25">
-						</div>
+          <h4>НЕЖИЛОЙ ФОНД: ПЕРЕХОД ОТ ГАЗА К АЛЬТЕРНАТИВНЫМ ЭНЕРГОНОСИТЕЛЯМ</h4>
+          <div class="commonRange">
+            <input type="range" min="1000" max="300000" value="1000" step="500" ng-model="squareMetrAlt"> {{squareMetrAlt}}
+          </div>
+          <table class="search__block__result__alternative-energy" cellspacing="0">
 						<thead>
 							<tr>
 								<td>Вид топлива</td>
 								<td>Стоимость</td>
 								<td>Расход за сезон</td>
 								<td>Стоимость за сезон</td>
-                <td>Экономия за сезон</td>
+								<td>Экономия за сезон</td>
 							</tr>
 						</thead>
+            <tr>
+							<td style="text-align: left">{{nameGas}}</td>
+							<td><input type="number" value="" ng-model="costGas"></td>
+							<td>{{squareMetrAlt | number:2}}</td>
+							<td>{{squareMetrAlt * costGas | number:1 | currencyUAH}} </td>
+							<td>-</td>
+						</tr>
+						<tr ng-repeat="alter in valueFuel" ng-if="$index > 0">
+							<td style="text-align: left">{{alter[0]}}</td>
+							<td><input type="number" value="" ng-model="alter[1]"></td>
+							<td ng-model="alter[2]">{{squareMetrAlt * alter[3] / defaultGas | number:2 }}</td>
+							<td>{{alter[1] * squareMetrAlt * alter[3] / defaultGas | number:1 | currencyUAH}}</td>
+							<td>
+                {{100-(alter[1] * squareMetrAlt * alter[3] / defaultGas*100/(squareMetrAlt * costGas)) | number:2 | percent}}
+                :
+                {{squareMetrAlt * costGas - alter[1] * squareMetrAlt * alter[3] / defaultGas | number:1 | currencyUAH}}
+              </td>
+						</tr>
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-<script src='script.js'></script>
+	<script src='js-work/script.js'></script>
 </body>
 </html>
