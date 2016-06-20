@@ -1,4 +1,4 @@
-﻿var app = angular.module('app', []);
+ ﻿var app = angular.module('app', []);
 
 app.filter('percent', function() {
   return function(input) {
@@ -10,21 +10,63 @@ app.filter('currencyUAH', function() {
     return input + " грн";
   };
 });
+app.filter('autonom', function() {
+  return function(input) {
+    return input + " Гкал";
+  };
+});
+app.filter('alternative', function() {
+  return function(input) {
+    return input/1000 + " тысяч м3";
+  };
+});
+app.filter('squareHouse', function() {
+  return function(input) {
+    return input + " м";
+  };
+});
+app.filter('capasityBoiler', function () {
+  return function (items, squareMetr) {
+    var filtered = [];
+    var firstCapacity = Math.floor(squareMetr/100)*100;
+    var lastCapacity = Math.ceil(squareMetr/100)*100;
+    for (var i = 0; i < items.length; i++) {
+      if ( items[i].capacity >= firstCapacity &&  items[i].capacity <= lastCapacity ) {
+        filtered.push(items[i]);
+      }
+    }
+    return filtered;
+  };
+});
 
-app.controller('mainCtrl', function($scope){
+app.controller('mainCtrl', function($scope, $http){
 	$scope.valueFuel = {
-		gas: ['Газ', 7, 550, 550, 3100, 460],
-		gas2: ['Газ, конденсационный котел', 7, 470, 470, 2660, 400],
-		wood: ['Дрова', 350, 3.18, 3.18, 18.03, 2.7],
-		pellet: ['Пеллета, Лузга', 1.75, 1080, 1080, 6150, 920],
-		pelletWood: ['Пеллета, Древесная', 2.21, 1020, 1020, 5810, 870]
+		gas: ['Газ', 7, 550, 550, 3100, 460, 'м3'],
+		gas2: ['Газ, конденсационный котел', 7, 470, 470, 2660, 400,'м3'],
+		wood: ['Дрова', 350, 3.18, 3.18, 18.03, 2.7, 'складометров'],
+		pellet: ['Пеллета, Лузга', 1.75, 1080, 1080, 6150, 920, 'кг'],
+		pelletWood: ['Пеллета, Древесная', 2.21, 1020, 1020, 5810, 870, 'кг']
 	};
 
+  $http.get('http://127.0.0.1:8080/result.js')
+  .success(function(result){
+    $scope.resultBoiler = result;
+  })
+
+    $scope.searchBoiler = function() {
+      if ( $scope.checkboxModel.value ) {
+        $('.search__block__result-boiler').show();
+      } else {
+        $('.search__block__result-boiler').hide();
+      }
+    };
+    $scope.checkboxModel = {
+       value : false
+     };
   var defaultCosts = [];
   for (var i in $scope.valueFuel) {
     defaultCosts.push([$scope.valueFuel[i][2], $scope.valueFuel[i][5]]);
   }
-
   $scope.factorSaveEnergy = {
     oneFloor: [
       1,
@@ -75,7 +117,7 @@ app.controller('mainCtrl', function($scope){
 	$scope.defaultGas = $scope.valueFuel.gas[2];
 	$scope.energyAutonomous = 20;
 	$scope.energyAutonomousCost = 1941.24;
-  
+
   $(function(){
     $('.search__block__type-fuel-type [type=checkbox]').on('click', function() {
       console.log('test');
@@ -90,5 +132,23 @@ app.controller('mainCtrl', function($scope){
         };
       });
     });
+    $( '.search__block__flat-type' ).buttonset();
+    $( '.search__block__flat-type-floor' ).buttonset();
+    $('#quality1rdesc, #quality2rdesc').hide();
+    $('.search__block__result-boiler').hide();
+    $('ul.search__block__flat-type').each(function() {
+     $(this).find('li').each(function(i) {
+       $(this).click(function(){
+         $('#quality1rdesc, #quality2rdesc, #quality3rdesc').hide();
+         if ( i === 0 ) {
+           $('#quality1rdesc').fadeIn();
+         } else if ( i === 1 ) {
+           $('#quality2rdesc').fadeIn();
+         } else if ( i === 2 ) {
+           $('#quality3rdesc').fadeIn();
+         }
+       });
+     });
+   });
   });
 });

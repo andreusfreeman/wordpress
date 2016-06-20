@@ -2,10 +2,13 @@
     <html>
 <head>
   <link rel="stylesheet" href="styles/style.css" >
-	<script	src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script
+		src="https://code.jquery.com/jquery-1.12.4.min.js"
+		integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+		crossorigin="anonymous"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head>
 <body ng-app="app">
 	<div class="main" ng-controller="mainCtrl">
@@ -17,14 +20,21 @@
 				<div class="search__block__area-body">
 					<div>
 						<input type="range" min="25" max="500" value="25" ng-model="squareMetr">
-            <span class="title-parametre">{{squareMetr}} м<sup>2</sup></span>
+            <span class="title-parametre">{{squareMetr | squareHouse}}</span>
 					</div>
-          <div class="search__block__area-checkbox">
-    				<input type="checkbox" id="show-result" ng-click="searchBoiler()" ng-model="checkboxModel.value">
-            <label for="show-result">
-              Показывать котлы согласно выбранной площади
-            </label>
-    			</div>
+				</div>
+			</div>
+			<div class="search__block__type-fuel">
+				<div class="search__block__type-fuel-header">
+					<span>Вид топлива:</span>
+				</div>
+				<div class="search__block__type-fuel-body">
+					<ul class="search__block__type-fuel-type" ng-repeat="fuelType in valueFuel">
+            <li>
+              <label>{{fuelType[0]}}</label>
+              <input type="checkbox" checked>
+            </li>
+					</ul>
 				</div>
 			</div>
 			<div class="search__block__flat">
@@ -66,29 +76,12 @@
               </label>
             </li>
 					</ul>
-          <div class="search__block__flat-type-calc-desc">
-            <p id="quality1rdesc">
-               Стена - кирпичная кладка 400<br> Перекрытие - деревянные балки с саманом или ЖБ плита с засыпкой керамзитом 150 мм
-             </p>
-            <p id="quality2rdesc">
-               Стена утеплена пенопластом 50 мм<br> Перекрытие минплитой 100 мм
-             </p>
-            <p id="quality3rdesc">
-               Стена - газобетон 300 мм + пенопласт 50 мм<br> Перекрытие - ЖБ плита + минплита 250 мм
-             </p>
-          </div>
 				</div>
 			</div>
+			<div class="search__block__area-button">
+				<button>Расчитать потребление</button>
+			</div>
 			<div class="search__block__result">
-        <ul class="search__block__result-boiler">
-          <li ng-repeat="boiler in resultBoiler | capasityBoiler:squareMetr">
-            <div class="search__block__result-boiler-card">
-              <h6>{{boiler.name}}</h6>
-              <img src="{{boiler.image}}" width="200" alt="">
-              <span>Мощность: {{boiler.capacity}}</span>
-            </div>
-          </li>
-        </ul>
 				<div class="search__block__result__costs-home">
 					<table class="search__block__result__costs" cellspacing="0">
 						<thead>
@@ -101,15 +94,12 @@
 						</thead>
 						<tr ng-repeat="value in valueFuel">
 							<td style="text-align: left">{{value[0]}}</td>
-							<td><input type="number" value="" ng-model="value[1]"> грн</td>
+							<td><input type="number" value="" ng-model="value[1]"></td>
 							<td ng-model="value[2]">{{value[2] * squareMetr / 25 | number:1}} {{value[6]}}</td>
 							<td>{{value[1] * value[2] * squareMetr / 25 | number:1 | currencyUAH}}</td>
 						</tr>
 					</table>
           <h4>НЕЖИЛОЙ ФОНД: ПЕРЕХОД ОТ ТЕПЛОСЕТИ НА АВТОНОМНОЕ ТЕПЛОСНАБЖЕНИЕ</h4>
-          <div class="search__block__result-title">
-            Ваш текущий расход тепла от теплосети за сезон:
-          </div>
           <div class="commonRange">
             <input type="range" min="20" max="2000" step="10" value="20" ng-model="energyAutonomous" width="500px">
             <span class="title-parametre">
@@ -135,7 +125,7 @@
 						</tr>
 						<tr ng-repeat="auton in valueFuel">
 							<td style="text-align: left">{{auton[0]}}</td>
-							<td><input type="number" value="" ng-model="auton[1]"> грн</td>
+							<td><input type="number" value="" ng-model="auton[1]"></td>
 							<td ng-model="auton[2]">{{energyAutonomous * auton[4] / 20 | number:1}} {{auton[6]}}</td>
 							<td>{{auton[1] * energyAutonomous * auton[4] / 20 | number:1 | currencyUAH}}</td>
 							<td>
@@ -146,13 +136,10 @@
 						</tr>
 					</table>
           <h4>НЕЖИЛОЙ ФОНД: ПЕРЕХОД ОТ ГАЗА К АЛЬТЕРНАТИВНЫМ ЭНЕРГОНОСИТЕЛЯМ</h4>
-          <div class="search__block__result-title">
-            Расход газа за сезон:
-          </div>
           <div class="commonRange">
             <input type="range" min="1000" max="300000" value="1000" step="500" ng-model="squareMetrAlt">
             <span class="title-parametre">
-              {{squareMetrAlt/1000}} тысяч м<sup>3</sup>
+              {{squareMetrAlt | alternative}}
             </span>
           </div>
           <table class="search__block__result__alternative-energy" cellspacing="0">
@@ -167,14 +154,14 @@
 						</thead>
             <tr>
 							<td style="text-align: left">{{nameGas}}</td>
-							<td><input type="number" value="" ng-model="costGas"> грн</td>
+							<td><input type="number" value="" ng-model="costGas"></td>
 							<td>{{squareMetrAlt | number:1}}</td>
 							<td>{{squareMetrAlt * costGas | number:1 | currencyUAH}} </td>
 							<td>-</td>
 						</tr>
 						<tr ng-repeat="alter in valueFuel" ng-if="$index > 0">
 							<td style="text-align: left">{{alter[0]}}</td>
-							<td><input type="number" value="" ng-model="alter[1]"> грн</td>
+							<td><input type="number" value="" ng-model="alter[1]"></td>
 							<td ng-model="alter[2]">{{squareMetrAlt * alter[3] / defaultGas | number:1 }} {{alter[6]}}</td>
 							<td>{{alter[1] * squareMetrAlt * alter[3] / defaultGas | number:0 | currencyUAH}}</td>
 							<td>
