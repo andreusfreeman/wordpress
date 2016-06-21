@@ -27,6 +27,19 @@
     			</div>
 				</div>
 			</div>
+      <div class="search__block__type-fuel">
+				<div class="search__block__type-fuel-header">
+					<span>Вид топлива:</span>
+				</div>
+				<div class="search__block__type-fuel-body">
+					<ul class="search__block__type-fuel-type">
+            <li ng-repeat="fuelType in valueFuel">
+              <label>{{fuelType[0]}}</label>
+              <input ng-click="hidePosition()" type="checkbox" value="{{fuelType[7]}}" checked>
+            </li>
+					</ul>
+				</div>
+			</div>
 			<div class="search__block__flat">
 				<div class="search__block__flat-header">
 					<span>Утепленность помещения:</span>
@@ -80,15 +93,6 @@
 				</div>
 			</div>
 			<div class="search__block__result">
-        <ul class="search__block__result-boiler">
-          <li ng-repeat="boiler in resultBoiler | capasityBoiler:squareMetr">
-            <div class="search__block__result-boiler-card">
-              <h6>{{boiler.name}}</h6>
-              <img src="{{boiler.image}}" width="200" alt="">
-              <span>Мощность: {{boiler.capacity}}</span>
-            </div>
-          </li>
-        </ul>
 				<div class="search__block__result__costs-home">
 					<table class="search__block__result__costs" cellspacing="0">
 						<thead>
@@ -99,13 +103,22 @@
 								<td>Стоимость за сезон</td>
 							</tr>
 						</thead>
-						<tr ng-repeat="value in valueFuel">
+						<tr ng-repeat="value in valueFuel | fuelType:tempVariable">
 							<td style="text-align: left">{{value[0]}}</td>
 							<td><input type="number" value="" ng-model="value[1]"> грн</td>
 							<td ng-model="value[2]">{{value[2] * squareMetr / 25 | number:1}} {{value[6]}}</td>
 							<td>{{value[1] * value[2] * squareMetr / 25 | number:1 | currencyUAH}}</td>
 						</tr>
 					</table>
+          <ul class="search__block__result-boiler">
+            <li ng-repeat="boiler in resultBoiler | capacityBoiler:squareMetr">
+              <div class="search__block__result-boiler-card">
+                <h5>{{boiler.name}}</h5>
+                <img src="{{boiler.image}}" width="200" alt="">
+                <span>Мощность: {{boiler.capacity}}</span>
+              </div>
+            </li>
+          </ul>
           <h4>НЕЖИЛОЙ ФОНД: ПЕРЕХОД ОТ ТЕПЛОСЕТИ НА АВТОНОМНОЕ ТЕПЛОСНАБЖЕНИЕ</h4>
           <div class="search__block__result-title">
             Ваш текущий расход тепла от теплосети за сезон:
@@ -133,7 +146,7 @@
 							<td ng-model="costsValue">{{energyAutonomous * energyAutonomousCost | currencyUAH}}</td>
 							<td>-</td>
 						</tr>
-						<tr ng-repeat="auton in valueFuel">
+						<tr ng-repeat="auton in valueFuel | fuelType:tempVariable">
 							<td style="text-align: left">{{auton[0]}}</td>
 							<td><input type="number" value="" ng-model="auton[1]"> грн</td>
 							<td ng-model="auton[2]">{{energyAutonomous * auton[4] / 20 | number:1}} {{auton[6]}}</td>
@@ -167,20 +180,20 @@
 						</thead>
             <tr>
 							<td style="text-align: left">{{nameGas}}</td>
-							<td><input type="number" value="" ng-model="costGas"> грн</td>
+							<td><input type="number" value="" ng-model="valueFuel.gas[1]"> грн</td>
 							<td>{{squareMetrAlt | number:1}}</td>
-							<td>{{squareMetrAlt * costGas | number:1 | currencyUAH}} </td>
+							<td>{{squareMetrAlt * valueFuel.gas[1] | number:1 | currencyUAH}} </td>
 							<td>-</td>
 						</tr>
-						<tr ng-repeat="alter in valueFuel" ng-if="$index > 0">
+						<tr ng-repeat="alter in valueFuel | fuelType:tempVariable" ng-if="alter[0] != 'Газ'">
 							<td style="text-align: left">{{alter[0]}}</td>
 							<td><input type="number" value="" ng-model="alter[1]"> грн</td>
 							<td ng-model="alter[2]">{{squareMetrAlt * alter[3] / defaultGas | number:1 }} {{alter[6]}}</td>
 							<td>{{alter[1] * squareMetrAlt * alter[3] / defaultGas | number:0 | currencyUAH}}</td>
 							<td>
-                {{100-(alter[1] * squareMetrAlt * alter[3] / defaultGas*100/(squareMetrAlt * costGas)) | number:1 | percent}}
+                {{100-(alter[1] * squareMetrAlt * alter[3] / defaultGas*100/(squareMetrAlt * valueFuel.gas[1])) | number:1 | percent}}
                 :
-                {{squareMetrAlt * costGas - alter[1] * squareMetrAlt * alter[3] / defaultGas | number:0 | currencyUAH}}
+                {{squareMetrAlt * valueFuel.gas[1] - alter[1] * squareMetrAlt * alter[3] / defaultGas | number:0 | currencyUAH}}
               </td>
 						</tr>
 					</table>
