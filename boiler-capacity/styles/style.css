@@ -41,7 +41,6 @@ sup {
   font-size: 12px; }
 
 .search__block__type-fuel {
-  width: 348px;
   float: right;
   border: 1px solid red;
   margin: 10px; }
@@ -216,3 +215,30 @@ tr {
     background: #424242; }
   [type=range]:focus::-ms-fill-upper {
     background: #4f4f4f; }
+
+.fuel-selector input {
+  display: none; }
+
+.wood {
+  background-image: url(../img/wood_choiced.jpg); }
+
+.pelleta {
+  background-image: url(../img/pellet_choiced.jpg); }
+
+.fuel-selector input[type=checkbox] + .fuel-type {
+  opacity: 0.9; }
+
+.fuel-selector input[type=checkbox]:checked + .fuel-type {
+  opacity: 1; }
+
+.fuel-type {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 100px;
+  height: 100px; }
+
+.fuel-type:hover {
+  -webkit-filter: brightness(1.2) grayscale(0.5) opacity(0.5);
+  -moz-filter: brightness(1.2) grayscale(0.5) opacity(0.5);
+  filter: brightness(1.2) grayscale(0.5) opacity(0.5); }

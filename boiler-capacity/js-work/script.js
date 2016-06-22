@@ -26,39 +26,50 @@ app.filter('squareHouse', function() {
   };
 });
 app.filter('capacityBoiler', function () {
-  return function (items, squareMetr) {
+  return function (items, squareMetr, testNew) {
     var filtered = [];
-    var firstCapacity = Math.floor(squareMetr/100)*100;
-    var lastCapacity = Math.ceil(squareMetr/100)*100;
+    var filteredFuel = [];
     for (var i = 0; i < items.length; i++) {
-      if ( items[i].capacity >= firstCapacity &&  items[i].capacity <= lastCapacity ) {
+      if ( items[i].capacityMax >= squareMetr ) {
         filtered.push(items[i]);
       }
     }
-    return filtered;
-  };
-});
-app.filter('fuelType', function () {
-  return function (items, tempVariable) {
-    var filteredFuel = [];
     $.each($('.search__block__type-fuel-type li'), function(index, value){
         if(value.children[1].checked) {
+          $(this).attr('style', 'opacity: 1');
           var nameFuel = value.children[1].value;
-          filteredFuel.push(items[nameFuel]);
+          for ( var i = 0; i < filtered.length; i++ ) {
+            if ( filtered[i].fuel === nameFuel ) {
+              filteredFuel.push(filtered[i]);
+            }
+          }
+        } else {
+          $(this).attr('style', 'opacity: 0.5');
         }
       });
     return filteredFuel;
   };
 });
 
-app.controller('mainCtrl', function($scope, $http){
-	$scope.valueFuel = {
-		gas: ['Газ', 7, 550, 550, 3100, 460, 'м3', 'gas'],
-		gas2: ['Газ, конденсационный котел', 7, 470, 470, 2660, 400,'м3', 'gas2'],
-		wood: ['Дрова', 350, 3.18, 3.18, 18.03, 2.7, 'складометров', 'wood'],
-		pellet: ['Пеллета, Лузга', 1750, 1.080, 1.080, 6.150, 0.920, 'тонн', 'pellet'],
-		pelletWood: ['Пеллета, Древесная', 2210, 1.020, 1.020, 5.810, 0.870, 'тонн', 'pelletWood']
-	};
+app.factory('dataFactory', function(){
+  return {
+    valueFuel: {
+  		gas: ['Газ', 7, 550, 550, 3100, 460, 'м3', 'gas'],
+  		gas2: ['Газ, конденсационный котел', 7, 470, 470, 2660, 400,'м3', 'gas'],
+  		wood: ['Дрова', 350, 3.18, 3.18, 18.03, 2.7, 'складометров', 'wood'],
+  		pellet: ['Пеллета, Лузга', 1750, 1.080, 1.080, 6.150, 0.920, 'тонн', 'pelleta'],
+  		pelletWood: ['Пеллета, Древесная', 2210, 1.020, 1.020, 5.810, 0.870, 'тонн', 'pelleta']
+  	},
+    fuelType: [
+      'wood',
+      'pelleta'
+    ]
+  }
+});
+
+app.controller('mainCtrl', function($scope, $http, dataFactory){
+  $scope.valueFuel = dataFactory.valueFuel;
+  $scope.nameFuelType = dataFactory.fuelType;
 
   $http.get('http://127.0.0.1:8080/result.js')
   .success(function(result){

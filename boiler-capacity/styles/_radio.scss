@@ -1,0 +1,27 @@
+.fuel-selector input{
+    display: none;
+}
+.wood {
+  background-image:url(../img/wood_choiced.jpg);
+}
+.pelleta {
+  background-image:url(../img/pellet_choiced.jpg);
+}
+
+.fuel-selector input[type=checkbox] + .fuel-type {
+  opacity: 0.9;}
+.fuel-selector input[type=checkbox]:checked + .fuel-type {
+  opacity: 1;
+}
+.fuel-type {
+    cursor:pointer;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:100px;height:100px;
+}
+
+.fuel-type:hover{
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.5);
+       -moz-filter: brightness(1.2) grayscale(.5) opacity(.5);
+            filter: brightness(1.2) grayscale(.5) opacity(.5);
+}

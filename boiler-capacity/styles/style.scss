@@ -41,7 +41,6 @@ sup {
   font-size: 12px;
 }
 .search__block__type-fuel {
-  width: 348px;
   float: right;
   border: 1px solid red;
   margin: 10px;
@@ -154,3 +153,4 @@ tr {
 }
 
 @import 'range';
+@import 'radio';

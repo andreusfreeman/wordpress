@@ -16,7 +16,7 @@
 				</div>
 				<div class="search__block__area-body">
 					<div>
-						<input type="range" min="25" max="500" value="25" ng-model="squareMetr">
+						<input type="range" min="25" max="6000" value="100" ng-model="squareMetr">
             <span class="title-parametre">{{squareMetr}} м<sup>2</sup></span>
 					</div>
           <div class="search__block__area-checkbox">
@@ -32,10 +32,10 @@
 					<span>Вид топлива:</span>
 				</div>
 				<div class="search__block__type-fuel-body">
-					<ul class="search__block__type-fuel-type">
-            <li ng-repeat="fuelType in valueFuel">
-              <label>{{fuelType[0]}}</label>
-              <input ng-click="hidePosition()" type="checkbox" value="{{fuelType[7]}}" checked>
+					<ul class="search__block__type-fuel-type fuel-selector">
+            <li ng-repeat="fuelType in nameFuelType">
+              <label class="fuel-type {{fuelType}}" for="{{fuelType}}"></label>
+              <input id="{{fuelType}}" ng-click="hidePosition()" type="checkbox" value="{{fuelType}}">
             </li>
 					</ul>
 				</div>
@@ -103,7 +103,7 @@
 								<td>Стоимость за сезон</td>
 							</tr>
 						</thead>
-						<tr ng-repeat="value in valueFuel | fuelType:tempVariable">
+						<tr ng-repeat="value in valueFuel">
 							<td style="text-align: left">{{value[0]}}</td>
 							<td><input type="number" value="" ng-model="value[1]"> грн</td>
 							<td ng-model="value[2]">{{value[2] * squareMetr / 25 | number:1}} {{value[6]}}</td>
@@ -111,10 +111,14 @@
 						</tr>
 					</table>
           <ul class="search__block__result-boiler">
-            <li ng-repeat="boiler in resultBoiler | capacityBoiler:squareMetr">
+            <li ng-repeat="boiler in resultBoiler | capacityBoiler:squareMetr: tempVariable">
               <div class="search__block__result-boiler-card">
-                <h5>{{boiler.name}}</h5>
-                <img src="{{boiler.image}}" width="200" alt="">
+                <a href="{{boiler.link}}">
+                  <h5>{{boiler.name}}</h5>
+                </a>
+                <a href="{{boiler.link}}">
+                  <img src="{{boiler.image}}" width="200" alt="">
+                </a>
                 <span>Мощность: {{boiler.capacity}}</span>
               </div>
             </li>
@@ -143,10 +147,10 @@
 							<td style="text-align: left">Теплосети</td>
 							<td></td>
 							<td ng-model="costs">{{energyAutonomous}} Гкал</td>
-							<td ng-model="costsValue">{{energyAutonomous * energyAutonomousCost | currencyUAH}}</td>
+							<td ng-model="costsValue">{{energyAutonomous * energyAutonomousCost | number:1 | currencyUAH}}</td>
 							<td>-</td>
 						</tr>
-						<tr ng-repeat="auton in valueFuel | fuelType:tempVariable">
+						<tr ng-repeat="auton in valueFuel">
 							<td style="text-align: left">{{auton[0]}}</td>
 							<td><input type="number" value="" ng-model="auton[1]"> грн</td>
 							<td ng-model="auton[2]">{{energyAutonomous * auton[4] / 20 | number:1}} {{auton[6]}}</td>
@@ -185,7 +189,7 @@
 							<td>{{squareMetrAlt * valueFuel.gas[1] | number:1 | currencyUAH}} </td>
 							<td>-</td>
 						</tr>
-						<tr ng-repeat="alter in valueFuel | fuelType:tempVariable" ng-if="alter[0] != 'Газ'">
+						<tr ng-repeat="alter in valueFuel" ng-if="alter[0] != 'Газ'">
 							<td style="text-align: left">{{alter[0]}}</td>
 							<td><input type="number" value="" ng-model="alter[1]"> грн</td>
 							<td ng-model="alter[2]">{{squareMetrAlt * alter[3] / defaultGas | number:1 }} {{alter[6]}}</td>
