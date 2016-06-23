@@ -6,13 +6,21 @@
   margin: 0 auto;
   position: relative;
   width: 1000px;
-  height: 500px;
   font-family: sans-serif;
+
 }
 .title-parametre {
   font-size: 20px;
   display: block;
   text-align: center;
+}
+.search__block__result__costs-info {
+  display: block;
+  float: left;
+  margin-left: 50px;
+  color: #8f431e;
+  padding: 10px;
+  font-style: italic;
 }
 .search__block__result-title {
   text-align: center;
@@ -28,22 +36,42 @@ sup {
     line-height: 0;
     vertical-align: baseline;
 }
-.search__block__area,
+.search__block__area {
+  float: left;
+  width: 650px;
+  border: 1px solid red;
+  margin-top: 10px;
+  margin-left: 50px;
+  box-shadow: 4px 4px 5px grey;
+}
 .search__block__flat {
   float: left;
-  width: 600px;
+  width: 650px;
+  height: 170px;
   border: 1px solid red;
-  margin: 10px;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  box-shadow: 4px 4px 5px grey;
 }
 .search__block__flat-type-calc-desc {
   margin: 10px;
   margin-left: 60px;
   font-size: 12px;
+
+  p {
+    font-style: italic;
+    color: #7e7d89;
+    text-shadow: 3px 3px 4px #b2b2b3;
+  }
 }
 .search__block__type-fuel {
   float: right;
   border: 1px solid red;
-  margin: 10px;
+  margin-top: 10px;
+  margin-right: 50px;
+  width: 234px;
+  box-shadow: 4px 4px 5px grey;
 }
 .search__block__area-header,
 .search__block__type-fuel-header,
@@ -53,6 +81,7 @@ sup {
   padding: 5px;
   color: white;
   font-family: Calibri, sans-serif;
+  text-shadow: 3px 3px 4px #ceb7bd;
 }
 .search__block__area-body{
   padding: 10px;
@@ -92,7 +121,9 @@ sup {
   label {
     padding: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
+    text-shadow: 3px 3px 4px #9b999f;
+    color: #2823f5;
   }
 }
 .search__block__result-boiler-card {
@@ -107,16 +138,37 @@ sup {
   width: 90%;
   margin: 0 auto;
   overflow: hidden;
-  padding: 10px;
+  border: 1px solid #2823f5;
+  margin-top: 20px;
+  box-shadow: 4px 4px 5px #9593fb;
 
   li {
     list-style: none;
     margin: 10px;
+
+    a {
+      text-decoration: none;
+    }
+  }
+  h5 {
+    text-shadow: 3px 3px 4px #9b999f;
+    padding: 5px;
+    text-align: center;
+    color: #3f3d78;
   }
 }
+.search__block__result-boiler-card-capacity {
+  text-shadow: 3px 3px 4px #9b999f;
+  padding: 5px;
+  text-align: center;
+  color: #3f3d78;
+  font-size: 12px;
+}
 h4 {
-  margin-top: 100px;
+  margin-top: 50px;
+  margin-left: 30px;
   padding: 20px;
+  text-shadow: 3px 3px 4px #9b999f;
 }
 .commonRange {
   clear: both;
@@ -125,11 +177,12 @@ h4 {
   padding: 20px;
 }
 table {
-  border: 1px solid grey;
-  border-style: dashed;
+  border: 1px solid #bb0333;
   width: 90%;
   margin: 0 auto;
   border-collapse: collapse;
+  box-shadow: 4px 4px 5px grey;
+  text-shadow: 3px 3px 4px #9b999f;
 
   thead {
     background-color: rgba(165, 162, 177, 0.5);
@@ -139,17 +192,28 @@ table {
     width: 50px;
     text-align: center;
     padding: 5px;
+    border: 0px;
+    border-bottom: 0.5px solid #bb0333;
   }
 }
 td {
   padding: 5px;
   text-align: center;
-  border: 1px solid grey;
-  border-style: dashed;
+  border: 1px solid #bb0333;
 }
 tr {
-  border: 1px solid grey;
-  border-style: dashed;
+  border: 1px solid #bb0333;
+}
+.search__block__result-boiler-error {
+  width: 300px;
+  padding: 10px;
+  background-color: blue;
+  margin: 0 auto;
+  box-shadow: 4px 4px 5px grey;
+
+  span {
+    color: white;
+  }
 }
 
 @import 'range';

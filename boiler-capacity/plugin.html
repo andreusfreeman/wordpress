@@ -94,6 +94,9 @@
 			</div>
 			<div class="search__block__result">
 				<div class="search__block__result__costs-home">
+          <span class="search__block__result__costs-info">
+            Все результаты расчета являются ОРИЕНТИРОВОЧНЫМИ.
+          </span>
 					<table class="search__block__result__costs" cellspacing="0">
 						<thead>
 							<tr>
@@ -110,19 +113,27 @@
 							<td>{{value[1] * value[2] * squareMetr / 25 | number:1 | currencyUAH}}</td>
 						</tr>
 					</table>
-          <ul class="search__block__result-boiler">
-            <li ng-repeat="boiler in resultBoiler | capacityBoiler:squareMetr: tempVariable">
-              <div class="search__block__result-boiler-card">
-                <a href="{{boiler.link}}">
-                  <h5>{{boiler.name}}</h5>
-                </a>
-                <a href="{{boiler.link}}">
-                  <img src="{{boiler.image}}" width="200" alt="">
-                </a>
-                <span>Мощность: {{boiler.capacity}}</span>
-              </div>
-            </li>
-          </ul>
+          <div class="search__block__result-boiler">
+            <h5>Котлы согласно выбранной площади:</h5>
+            <ul>
+              <li ng-repeat="boiler in resultBoiler | capacityBoiler: squareMetr: tempVariable">
+                <div class="search__block__result-boiler-card" ng-if="boiler != 'not found'">
+                  <a href="{{boiler.link}}">
+                    <h5>{{boiler.name}}</h5>
+                  </a>
+                  <a href="{{boiler.link}}">
+                    <img src="{{boiler.image}}" width="200" alt="">
+                  </a>
+                  <span class="search__block__result-boiler-card-capacity">Мощность: {{boiler.capacity}}</span>
+                </div>
+                <div ng-if="boiler == 'not found'" class="search__block__result-boiler-error">
+                  <span class="search__block__result-boiler-error-choice-fuel">
+                    Выберите, пожалуйста,  вид топлива.
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
           <h4>НЕЖИЛОЙ ФОНД: ПЕРЕХОД ОТ ТЕПЛОСЕТИ НА АВТОНОМНОЕ ТЕПЛОСНАБЖЕНИЕ</h4>
           <div class="search__block__result-title">
             Ваш текущий расход тепла от теплосети за сезон:

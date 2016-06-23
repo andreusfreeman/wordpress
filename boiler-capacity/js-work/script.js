@@ -30,7 +30,12 @@ app.filter('capacityBoiler', function () {
     var filtered = [];
     var filteredFuel = [];
     for (var i = 0; i < items.length; i++) {
-      if ( items[i].capacityMax >= squareMetr ) {
+      if ( squareMetr < 140 ) {
+        squareMetr = 140;
+      } else if ( squareMetr >= 5000 ) {
+        squareMetr = 6000;
+      };
+      if ( items[i].capacityMax >= squareMetr && items[i].capacityMin <= squareMetr ) {
         filtered.push(items[i]);
       }
     }
@@ -47,6 +52,9 @@ app.filter('capacityBoiler', function () {
           $(this).attr('style', 'opacity: 0.5');
         }
       });
+      if ( filteredFuel.length === 0 ) {
+        filteredFuel.push('not found');
+      }
     return filteredFuel;
   };
 });
