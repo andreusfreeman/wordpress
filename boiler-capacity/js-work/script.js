@@ -29,6 +29,8 @@ app.filter('capacityBoiler', function () {
   return function (items, squareMetr, testNew) {
     var filtered = [];
     var filteredFuel = [];
+    var checkPelleta = false;
+    var checkInputChecked = false;
     for (var i = 0; i < items.length; i++) {
       if ( squareMetr < 140 ) {
         squareMetr = 140;
@@ -41,20 +43,30 @@ app.filter('capacityBoiler', function () {
     }
     $.each($('.search__block__type-fuel-type li'), function(index, value){
         if(value.children[1].checked) {
+          checkInputChecked = true;
           $(this).attr('style', 'opacity: 1');
           var nameFuel = value.children[1].value;
           for ( var i = 0; i < filtered.length; i++ ) {
             if ( filtered[i].fuel === nameFuel ) {
               filteredFuel.push(filtered[i]);
+              if ( nameFuel !== 'pelleta' ) {
+                checkPelleta = true;
+              }
             }
           }
         } else {
           $(this).attr('style', 'opacity: 0.5');
         }
       });
-      if ( filteredFuel.length === 0 ) {
+      if ( filteredFuel.length === 0 && checkInputChecked === false) {
         filteredFuel.push('not found');
-      }
+      } else if ( checkPelleta === false ) {
+        for ( var i = 0; i < filtered.length; i++ ) {
+          if ( filtered[i].fuelSecond === 'pelleta' && filtered[i].fuel !== 'pelleta' ) {
+            filteredFuel.push(filtered[i]);
+          }
+        }
+      };
     return filteredFuel;
   };
 });
