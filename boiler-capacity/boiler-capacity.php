@@ -7,7 +7,7 @@ Plugin Name: Boiler-capacity
 Plugin URI: http://altep.ua/
 Description:
 Version: 1.0
-Author: Automattic
+Author: Automatic
 Author URI: http://altep.ua/
 License:
 Text Domain: Boiler-capacity
@@ -37,5 +37,6 @@ function true_include_myscript() {
 	$real_url = $_SERVER['REQUEST_URI'];
 	if ($work_url === $real_url) {
 	 	wp_enqueue_script( 'myscript', '/wp-content/plugins/boiler-capacity/script.js', '', '3.0', true );
+		wp_enqueue_style( 'mystyle', '/wp-content/plugins/boiler-capacity/styles/style.css', '', '3.0', true );
 	}
 }

@@ -2,7 +2,7 @@
     <html>
 <head>
   <link rel="stylesheet" href="styles/style.css" >
-	<script	src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
   <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -34,8 +34,9 @@
 				<div class="search__block__type-fuel-body">
 					<ul class="search__block__type-fuel-type fuel-selector">
             <li ng-repeat="fuelType in nameFuelType">
-              <label class="fuel-type {{fuelType}}" for="{{fuelType}}"></label>
-              <input id="{{fuelType}}" ng-click="hidePosition()" type="checkbox" value="{{fuelType}}">
+              <label class="fuel-type {{fuelType[0]}}" for="{{fuelType[0]}}"></label>
+              <input id="{{fuelType[0]}}" ng-click="hidePosition()" type="checkbox" value="{{fuelType[0]}}">
+              <em>{{fuelType[1]}}</em>
             </li>
 					</ul>
 				</div>
@@ -81,13 +82,19 @@
 					</ul>
           <div class="search__block__flat-type-calc-desc">
             <p id="quality1rdesc">
-               Стена - кирпичная кладка 400<br> Перекрытие - деревянные балки с саманом или ЖБ плита с засыпкой керамзитом 150 мм
+               Стена - кирпичная кладка 400
+               <br>
+               Перекрытие - деревянные балки с саманом или ЖБ плита с засыпкой керамзитом 150 мм
              </p>
             <p id="quality2rdesc">
-               Стена утеплена пенопластом 50 мм<br> Перекрытие минплитой 100 мм
+               Стена утеплена пенопластом 50 мм
+               <br>
+               Перекрытие минплитой 100 мм
              </p>
             <p id="quality3rdesc">
-               Стена - газобетон 300 мм + пенопласт 50 мм<br> Перекрытие - ЖБ плита + минплита 250 мм
+               Стена - газобетон 300 мм + пенопласт 50 мм
+               <br>
+               Перекрытие - ЖБ плита + минплита 250 мм
              </p>
           </div>
 				</div>
@@ -118,7 +125,7 @@
             <ul>
               <li ng-repeat="boiler in resultBoiler | capacityBoiler: squareMetr: tempVariable">
                 <div ng-if="boiler != 'not found'">
-                  <div class="search__block__result-boiler-card" ng-if="boiler.fuel == boiler.fuelSecond">
+                  <div class="search__block__result-boiler-card" ng-if="boiler.marker === 0">
                     <a href="{{boiler.link}}">
                       <h5>{{boiler.name}}</h5>
                     </a>
@@ -127,9 +134,12 @@
                     </a>
                     <span class="search__block__result-boiler-card-capacity">Мощность: {{boiler.capacity}}</span>
                   </div>
-                  <div class="search__block__result-boiler-card" ng-if="boiler.fuel != boiler.fuelSecond">
+                  <div class="search__block__result-boiler-card-same" ng-if="boiler.marker === 2">
+                    <h5>Котлы с ручной загрузкой топлива и с возможностью установки пиллетной горелки:</h5>
+                  </div>
+                  <div class="search__block__result-boiler-card" ng-if="boiler.marker === 1 || boiler.marker === 2">
                     <a href="{{boiler.link}}">
-                      <h5>Tsdt{{boiler.name}}</h5>
+                      <h5>{{boiler.name}}</h5>
                     </a>
                     <a href="{{boiler.link}}">
                       <img src="{{boiler.image}}" width="200" alt="">
@@ -226,6 +236,10 @@
 				</div>
 			</div>
 		</div>
+    <div class="custom">
+      <p>Если Вы хотите разместить калькулятор мощности котла на своем сайте, то вставьте код, представленный ниже, на свою страницу:</p>
+      <div style="border: 1px solid #666666; padding: 5px;">&lt;iframe style="position:relative;top:0;left:0;width:750px; height:1000px;" src="http://defro.pro/?id=229&amp;tmpl=component?" allowfullscreen="" frameborder="0"&gt;&lt;/iframe&gt;</div>
+    </div>
 	</div>
 	<script src='js-work/script.js'></script>
 </body>

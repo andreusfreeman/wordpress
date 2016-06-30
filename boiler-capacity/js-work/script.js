@@ -1,4 +1,4 @@
- ﻿var app = angular.module('app', []);
+var app = angular.module('app', []);
 
 app.filter('percent', function() {
   return function(input) {
@@ -30,6 +30,7 @@ app.filter('capacityBoiler', function () {
     var filtered = [];
     var filteredFuel = [];
     var checkPelleta = false;
+    var firstElement = 2;
     var checkInputChecked = false;
     for (var i = 0; i < items.length; i++) {
       if ( squareMetr < 140 ) {
@@ -48,6 +49,7 @@ app.filter('capacityBoiler', function () {
           var nameFuel = value.children[1].value;
           for ( var i = 0; i < filtered.length; i++ ) {
             if ( filtered[i].fuel === nameFuel ) {
+              filtered[i].marker = 0;
               filteredFuel.push(filtered[i]);
               if ( nameFuel !== 'pelleta' ) {
                 checkPelleta = true;
@@ -63,10 +65,14 @@ app.filter('capacityBoiler', function () {
       } else if ( checkPelleta === false ) {
         for ( var i = 0; i < filtered.length; i++ ) {
           if ( filtered[i].fuelSecond === 'pelleta' && filtered[i].fuel !== 'pelleta' ) {
+            firstElement === 2 ? 2 : 1;
+            filtered[i].marker = firstElement;
             filteredFuel.push(filtered[i]);
+            firstElement = 1;
           }
         }
       };
+      console.log(filteredFuel);
     return filteredFuel;
   };
 });
@@ -81,8 +87,8 @@ app.factory('dataFactory', function(){
   		pelletWood: ['Пеллета, Древесная', 2210, 1.020, 1.020, 5.810, 0.870, 'тонн', 'pelleta']
   	},
     fuelType: [
-      'wood',
-      'pelleta'
+      ['wood', 'Дерево'],
+      ['pelleta', 'Пеллета']
     ]
   }
 });
@@ -183,5 +189,10 @@ app.controller('mainCtrl', function($scope, $http, dataFactory){
        });
      });
    });
+   $(".fuel-type").hover(function() {
+        $(this).next().next("em").animate({opacity: "show"}, "slow");
+      }, function() {
+        $(this).next().next("em").animate({opacity: "hide"}, "fast");
+      });
   });
 });

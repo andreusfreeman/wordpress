@@ -42,7 +42,6 @@ sup {
   border: 1px solid red;
   margin-top: 10px;
   margin-left: 50px;
-  box-shadow: 4px 4px 5px grey;
 }
 .search__block__flat {
   float: left;
@@ -52,7 +51,6 @@ sup {
   margin-top: 10px;
   margin-left: 50px;
   margin-bottom: 10px;
-  box-shadow: 4px 4px 5px grey;
 }
 .search__block__flat-type-calc-desc {
   margin: 10px;
@@ -62,7 +60,6 @@ sup {
   p {
     font-style: italic;
     color: #7e7d89;
-    text-shadow: 3px 3px 4px #b2b2b3;
   }
 }
 .search__block__type-fuel {
@@ -71,7 +68,6 @@ sup {
   margin-top: 10px;
   margin-right: 50px;
   width: 234px;
-  box-shadow: 4px 4px 5px grey;
 }
 .search__block__area-header,
 .search__block__type-fuel-header,
@@ -81,7 +77,6 @@ sup {
   padding: 5px;
   color: white;
   font-family: Calibri, sans-serif;
-  text-shadow: 3px 3px 4px #ceb7bd;
 }
 .search__block__area-body{
   padding: 10px;
@@ -100,16 +95,31 @@ sup {
     list-style: none;
   }
 }
-.search__block__type-fuel-type li{
-  width: 100px;
-  height: 100px;
-  display: inline-block;
-  padding: 5px;
-  list-style: none;
-  overflow: hidden;
-  margin: 2px;
-  border: 1px solid blue;
-  float: left;
+.fuel-type {
+  position: relative;
+}
+.search__block__type-fuel-type {
+
+  li{
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    padding: 5px;
+    list-style: none;
+    overflow: hidden;
+    margin: 2px;
+    border: 1px solid blue;
+    float: left;
+  }
+  em {
+    position: absolute;
+    top: 52px;
+    font-weight: normal;
+    background-color: #bbb;
+    text-align: center;
+    padding: 10px;
+    display: none;
+  }
 }
 .search__block__area-checkbox {
   clear: both;
@@ -122,7 +132,6 @@ sup {
     padding: 10px;
     cursor: pointer;
     font-size: 14px;
-    text-shadow: 3px 3px 4px #9b999f;
     color: #2823f5;
   }
 }
@@ -134,13 +143,16 @@ sup {
     display: block;
   }
 }
+.search__block__result-boiler-card-same {
+  float: left;
+  width: 100%;
+}
 .search__block__result-boiler {
   width: 90%;
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid #2823f5;
   margin-top: 20px;
-  box-shadow: 4px 4px 5px #9593fb;
 
   li {
     list-style: none;
@@ -151,14 +163,12 @@ sup {
     }
   }
   h5 {
-    text-shadow: 3px 3px 4px #9b999f;
     padding: 5px;
     text-align: center;
     color: #3f3d78;
   }
 }
 .search__block__result-boiler-card-capacity {
-  text-shadow: 3px 3px 4px #9b999f;
   padding: 5px;
   text-align: center;
   color: #3f3d78;
@@ -168,7 +178,6 @@ h4 {
   margin-top: 50px;
   margin-left: 30px;
   padding: 20px;
-  text-shadow: 3px 3px 4px #9b999f;
 }
 .commonRange {
   clear: both;
@@ -181,8 +190,6 @@ table {
   width: 90%;
   margin: 0 auto;
   border-collapse: collapse;
-  box-shadow: 4px 4px 5px grey;
-  text-shadow: 3px 3px 4px #9b999f;
 
   thead {
     background-color: rgba(165, 162, 177, 0.5);
@@ -209,10 +216,20 @@ tr {
   padding: 10px;
   background-color: blue;
   margin: 0 auto;
-  box-shadow: 4px 4px 5px grey;
 
   span {
     color: white;
+  }
+}
+
+.custom {
+  margin: 0 auto;
+  width: 90%;
+  padding: 5px;
+  margin-top: 15px;
+
+  p {
+    font-size: 12px;
   }
 }
 
